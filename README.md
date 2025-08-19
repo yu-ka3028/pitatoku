@@ -62,6 +62,7 @@
 - アイテム一覧：　（名前(item_name), 状態(status)（気になる★・購入済み✔️・作業中▶︎）, メモ(item_memo), 最終更新日時(update_at）
 - 全体の状態：idごとのstatusをカウントし、不足（Take Action!）／適正（Nice!!）／過剰（Take It Easy）を色分けで判定表示
 - 編集・削除ボタン（各行）
+[![Image from Gyazo](https://i.gyazo.com/e31d394241f1942d0641d86369a33ed4.png)](https://gyazo.com/e31d394241f1942d0641d86369a33ed4)
 
 ### 8.2 編集・削除画面
 - 名前(item_name)
