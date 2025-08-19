@@ -1,5 +1,6 @@
 services:
   app:
+    build: .
     image: yu-ka/pitatoku
     ports:
       - '8085:8080'
