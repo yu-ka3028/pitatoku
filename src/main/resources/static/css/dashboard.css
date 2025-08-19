@@ -1,0 +1,210 @@
+/* ========================================
+   ダッシュボード専用スタイル
+   ======================================== */
+
+/* ヘッダー */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* 状態カード */
+.status-overview {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.status-overview h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.status-cards {
+  display: flex;
+  width: 100%;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.status-pattern {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: transparent;
+  border-right: 1px solid #ddd;
+  color: #666;
+}
+
+.status-pattern:last-child {
+  border-right: none;
+}
+
+.status-pattern:hover {
+  transform: scale(1.02);
+}
+
+.status-pattern h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.status-pattern p {
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.status-pattern .count {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* 状態カードの色分け */
+.status-pattern.down.active {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+}
+
+.status-pattern.nice.active {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+}
+
+.status-pattern.high.active {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+}
+
+/* アイテム一覧 */
+.item-list {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.item-list h2 {
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.item-list-container {
+  overflow-x: auto;
+}
+
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.item-table th,
+.item-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.item-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.item-table tr:hover {
+  background: #f8f9fa;
+}
+
+/* 状態バッジ */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-block;
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+/* 操作ボタン */
+.edit-btn,
+.delete-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  margin: 2px;
+}
+
+.edit-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #1976d2;
+}
+
+.delete-btn {
+  background: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+}
+
+/* ダッシュボード専用のレスポンシブ設定 */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .status-overview {
+    flex-direction: column;
+  }
+
+  .item-table {
+    font-size: 0.9rem;
+  }
+
+  .item-table th,
+  .item-table td {
+    padding: 10px 8px;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ダッシュボード専用のアニメーション */
+.status-pattern,
+.item-list {
+  animation: fadeIn 0.6s ease-out;
+}

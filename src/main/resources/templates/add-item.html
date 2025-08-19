@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>アイテム追加 - ぴた得</title>
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/add-item.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>ぴた得</h1>
+        <p class="subtitle">アイテム追加</p>
+      </header>
+
+      <section class="form-section">
+        <div class="form-container">
+          <h2>アイテム情報</h2>
+          <form class="item-form" action="/add-item" method="post">
+            <div class="form-group">
+              <label for="item-name">名前</label>
+              <input
+                type="text"
+                id="item-name"
+                name="item_name"
+                placeholder="アイテム名を入力"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="item-status">状態</label>
+              <select id="item-status" name="status" required>
+                <option value="">状態を選択</option>
+                <option value="interested">気になる★</option>
+                <option value="purchased">購入済み✔️</option>
+                <option value="working">作業中▶︎</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="item-memo">メモ</label>
+              <textarea
+                id="item-memo"
+                name="memo"
+                placeholder="メモを入力（任意）"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-btn">保存</button>
+              <button type="button" class="cancel-btn" onclick="goBack()">
+                キャンセル
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+    <script src="/js/add-item.js"></script>
+  </body>
+</html>
