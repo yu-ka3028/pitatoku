@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ぴた得 Pitatoku</title>
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>ぴた得</h1>
+        <p class="subtitle">なんでもピタッと在庫管理</p>
+      </header>
+
+      <!-- アイテム追加ボタン -->
+      <section class="add-item-section">
+        <button class="add-item-btn">+追加</button>
+      </section>
+
+      <!-- 全体の状況 -->
+      <section class="status-overview">
+        <h2>全体の状態</h2>
+        <div class="status-cards">
+          <div class="status-pattern down">
+            <h3>Take action!</h3>
+          </div>
+          <div class="status-pattern nice">
+            <h3>Nice!!</h3>
+          </div>
+          <div class="status-pattern high">
+            <h3>Take it easy!</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- アイテム一覧 -->
+      <section class="item-list">
+        <h2>アイテム一覧</h2>
+        <div class="item-list-container">
+          <table class="item-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>名前</th>
+                <th>状態</th>
+                <th>メモ</th>
+                <th>更新日時</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <button class="delete-btn">削除</button>
+                </td>
+                <td>テスト書籍名</td>
+                <td>気になる</td>
+                <td>テストメモ</td>
+                <td>2025-01-01 12:00:00</td>
+                <td>
+                  <button class="edit-btn">編集</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- アイテム追加ボタン -->
+          <button class="add-item-btn">+追加</button>
+        </div>
+      </section>
+    </div>
+    <script src="/js/dashboard.js"></script>
+  </body>
+</html>
