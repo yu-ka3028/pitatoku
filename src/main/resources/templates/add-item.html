@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>アイテム追加 - ぴた得</title>
-    <link rel="stylesheet" href="../static/css/style.css" />
-    <link rel="stylesheet" href="../static/css/add-item.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/add-item.css" />
   </head>
   <body>
     <div class="container">
       <header class="header">
-        <h1>ぴた得</h1>
+        <h1><a href="/dashboard" class="header-link">ぴた得</a></h1>
         <p class="subtitle">アイテム追加</p>
       </header>
 
@@ -51,12 +51,7 @@
 
             <div class="form-actions">
               <button type="submit" class="submit-btn">保存</button>
-              <button type="button" class="cancel-btn" onclick="goBack()">
-                キャンセル
-              </button>
-              <button type="top" class="top-btn" href="/dashboard">
-                TOPへ戻る
-              </button>
+              <a href="/dashboard" class="cancel-btn">キャンセル</a>
             </div>
           </form>
         </div>
