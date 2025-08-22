@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,17 +51,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr th:each="item : ${items}">
                 <td>
                   <button class="delete-btn">削除</button>
                 </td>
-                <td>テスト書籍名</td>
-                <td>気になる</td>
-                <td>テストメモ</td>
-                <td>2025-01-01 12:00:00</td>
+                <td th:text="${item.itemName}">アイテム名</td>
+                <td th:text="${item.status}">状態</td>
+                <td th:text="${item.memo}">メモ</td>
+                <td th:text="${item.updatedAt}">更新日時</td>
                 <td>
                   <button class="edit-btn">編集</button>
                 </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(items)}"></tr>
+                <td colspan="6" class="no-items">アイテムがありません</td>
               </tr>
             </tbody>
           </table>
@@ -70,6 +73,6 @@
         </div>
       </section>
     </div>
-    <script src="/js/dashboard.js"></script>
+    <!-- <script src="/js/dashboard.js"></script> -->
   </body>
 </html>
