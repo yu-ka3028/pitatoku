@@ -1,22 +1,28 @@
 package com.example.demo.controller;
 import com.example.demo.model.Dashboard;
 import com.example.demo.model.Status;
+import com.example.demo.repository.DashboardRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.ArrayList;
 
 @Controller
 public class DashboardController {
+
+  @Autowired
+  private DashboardRepository dashboardRepository; 
+
   //ルーティング
   @RequestMapping("/dashboard")
-  public String dashboard() {
+  public String dashboard(Model model) {
+    List<Dashboard> items = dashboardRepository.findAll();
+    model.addAttribute("items", items);
     return "dashboard";
   }
 
@@ -26,8 +32,6 @@ public class DashboardController {
   }
 
   //追加フォームデータを受け取る
-  private List<Dashboard> items = new ArrayList<>();
-
   @PostMapping("/add-item")
   public String handleForm(
     @RequestParam("item_name") String itemName,
@@ -37,7 +41,7 @@ public class DashboardController {
     LocalDateTime updatedAt = LocalDateTime.now();
 
   Dashboard newItem = new Dashboard(itemName, getStatus(status), memo != null ? memo : "", updatedAt);
-  items.add(newItem);
+  dashboardRepository.save(newItem);
   return "redirect:/dashboard";
   }
 

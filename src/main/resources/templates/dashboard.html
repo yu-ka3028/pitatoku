@@ -56,7 +56,7 @@
                   <button class="delete-btn">削除</button>
                 </td>
                 <td th:text="${item.itemName}">アイテム名</td>
-                <td th:text="${item.status}">状態</td>
+                <td th:text="${item.status.displayName}">状態</td>
                 <td th:text="${item.memo}">メモ</td>
                 <td th:text="${item.updatedAt}">更新日時</td>
                 <td>
