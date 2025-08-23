@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import com.example.demo.model.Dashboard;
+import com.example.demo.model.Status;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,9 @@ public class DashboardController {
   //ルーティング
   @RequestMapping("/dashboard")
   public String dashboard() {
-  
     return "dashboard";
   }
+
   @RequestMapping("/add-item")
   public String addItem() {
     return "add-item";
@@ -33,19 +34,19 @@ public class DashboardController {
     @RequestParam("status") String status,
     @RequestParam(value = "memo", required = false) String memo
   ){
-    String updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    LocalDateTime updatedAt = LocalDateTime.now();
 
-  Dashboard newItem = new Dashboard(itemName, getStatusDisplay(status), memo != null ? memo : "", updatedAt);
+  Dashboard newItem = new Dashboard(itemName, getStatus(status), memo != null ? memo : "", updatedAt);
   items.add(newItem);
   return "redirect:/dashboard";
   }
 
-  private String getStatusDisplay(String status){
+  private Status getStatus(String status){
     switch(status){
-      case "interested": return "ToMore";
-      case "purchased": return "ToDo";
-      case "working": return "Now!!";
-      default: return status;
+      case "interested": return Status.INTERESTED;
+      case "purchased": return Status.PURCHASED;
+      case "working": return Status.WORKING;
+      default: return Status.INTERESTED;
     }
   }
 }
