@@ -1,10 +1,12 @@
 services:
   app:
-    image: yu-ka/pitatoku
+    # image: yu-ka/pitatoku
+    image: 293210009733.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
     ports:
       - '8085:8080'
     depends_on:
       - db
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/pika_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
@@ -19,6 +21,10 @@ services:
       - '3306:3306'
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 volumes:
   db_data:
