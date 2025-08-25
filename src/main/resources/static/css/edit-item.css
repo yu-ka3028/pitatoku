@@ -1,0 +1,41 @@
+/* ========================================
+   アイテム編集ページ専用スタイル
+   ======================================== */
+
+/* 編集ページ専用のアニメーション */
+.form-container {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 編集ページ専用のホバーエフェクト */
+.form-group:hover label {
+  color: #667eea;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #b3b3b3;
+}
+
+/* 編集ページ専用のスタイル */
+.form-group input[readonly] {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.form-group select option:checked {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}

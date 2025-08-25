@@ -31,6 +31,13 @@ public class DashboardController {
     return "add-item";
   }
 
+  @RequestMapping("/edit-item")
+  public String editItem(@RequestParam("id") Long id, Model model) {
+    Dashboard item = dashboardRepository.findById(id).orElseThrow(() -> new RuntimeException("アイテムが見つかりません"));
+    model.addAttribute("item", item);
+    return "edit-item";
+  }
+
   //追加フォームデータを受け取る
   @PostMapping("/add-item")
   public String handleForm(
@@ -53,4 +60,23 @@ public class DashboardController {
       default: return Status.INTERESTED;
     }
   }
+
+  @PostMapping("/update-item")
+  public String updateItem(
+    @RequestParam("id") Long id,
+    @RequestParam("item_name") String itemName,
+    @RequestParam("status") String status,
+    @RequestParam(value = "memo", required = false) String memo
+  ){
+    Dashboard item = dashboardRepository.findById(id).orElseThrow(() -> new RuntimeException("アイテムが見つかりません"));
+    item.setItemName(itemName);
+    item.setStatus(getStatus(status));
+    item.setMemo(memo != null ? memo : "");
+    item.setUpdatedAt(LocalDateTime.now());
+
+    dashboardRepository.save(item);
+    return "redirect:/dashboard";
+  }
 }
+
+

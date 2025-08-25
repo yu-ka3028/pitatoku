@@ -60,7 +60,7 @@
                 <td th:text="${item.memo}">メモ</td>
                 <td th:text="${item.updatedAt}">更新日時</td>
                 <td>
-                  <button class="edit-btn">編集</button>
+                  <a th:href="@{/edit-item(id=${item.id})}" class="edit-btn">編集</a>
                 </td>
               </tr>
               <tr th:if="${#lists.isEmpty(items)}"></tr>
