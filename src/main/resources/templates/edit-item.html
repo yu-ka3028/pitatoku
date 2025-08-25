@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>アイテム編集 - ぴた得</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/edit-item.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1><a href="/dashboard" class="header-link">ぴた得</a></h1>
+        <p class="subtitle">アイテム編集</p>
+      </header>
+
+      <section class="form-section">
+        <div class="form-container">
+          <h2>アイテム情報</h2>
+          <form class="item-form" action="/update-item" method="post">
+            <div class="form-group">
+              <label for="item-name">名前</label>
+              <input
+                type="text"
+                id="item-name"
+                name="item_name"
+                th:value="${item.itemName}"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="item-status">状態</label>
+              <select id="item-status" name="status" required>
+                <option value="">状態を選択</option>
+                <option value="interested" th:selected="${item.status == T(com.example.demo.model.Status).INTERESTED}">ToMore</option>
+                <option value="purchased" th:selected="${item.status == T(com.example.demo.model.Status).PURCHASED}">ToDo</option>
+                <option value="working" th:selected="${item.status == T(com.example.demo.model.Status).WORKING}">Now!!</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="item-memo">メモ</label>
+              <textarea
+                id="item-memo"
+                name="memo"
+                placeholder="メモを入力（任意）"
+                rows="4"
+                th:text="${item.memo}"
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-btn">保存</button>
+              <a href="/dashboard" class="cancel-btn">キャンセル</a>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+    <!-- <script src="/js/add-item.js"></script> -->
+  </body>
+</html>
