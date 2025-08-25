@@ -19,6 +19,17 @@
         <a href="/add-item" class="add-item-btn">+追加</a>
       </section>
 
+      <div class="modal-overlay" id="deleteModal">
+        <div class="delete-modal">
+          <h3>削除の確認</h3>
+          <p id="deleteMessage">このアイテムを削除しますか？</p>
+          <div class="modal-buttons">
+            <button class="modal-btn cancel" onclick="closeDeleteModal()">キャンセル</button>
+            <button class="modal-btn delete" onclick="confirmDelete()">削除</button>
+          </div>
+        </div>
+      </div>
+
       <!-- 全体の状況 -->
       <section class="status-overview">
         <h2>全体の状態</h2>
@@ -53,7 +64,7 @@
             <tbody>
               <tr th:each="item : ${items}">
                 <td>
-                  <button class="delete-btn">削除</button>
+                  <button class="delete-btn" th:data-id="${item.id}" th:data-name="${item.itemName}">削除</button>
                 </td>
                 <td th:text="${item.itemName}">アイテム名</td>
                 <td th:text="${item.status.displayName}">状態</td>
@@ -73,6 +84,6 @@
         </div>
       </section>
     </div>
-    <!-- <script src="/js/dashboard.js"></script> -->
+    <script src="/js/dashboard.js"></script>
   </body>
 </html>
