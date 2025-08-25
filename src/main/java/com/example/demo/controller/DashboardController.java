@@ -77,6 +77,12 @@ public class DashboardController {
     dashboardRepository.save(item);
     return "redirect:/dashboard";
   }
+
+  @PostMapping("/delete-item")
+  public String deleteItem(@RequestParam("id") Long id){
+    dashboardRepository.deleteById(id);
+    return "redirect:/dashboard";
+  }
 }
 
 
