@@ -2,6 +2,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Dashboard;
 import com.example.demo.model.Status;
 import com.example.demo.repository.DashboardRepository;
+import com.example.demo.service.AllStatusService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class DashboardController {
@@ -18,11 +20,17 @@ public class DashboardController {
   @Autowired
   private DashboardRepository dashboardRepository; 
 
+  @Autowired
+  private AllStatusService allStatusService;
+
   //ルーティング
   @RequestMapping("/dashboard")
   public String dashboard(Model model) {
     List<Dashboard> items = dashboardRepository.findAll();
+    Map<String, Object> statusData = allStatusService.calculateInventoryStatus();
     model.addAttribute("items", items);
+    model.addAttribute("statusData", statusData);
+
     return "dashboard";
   }
 
@@ -84,5 +92,3 @@ public class DashboardController {
     return "redirect:/dashboard";
   }
 }
-
-
