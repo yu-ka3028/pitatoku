@@ -34,13 +34,13 @@
       <section class="status-overview">
         <h2>全体の状態</h2>
         <div class="status-cards">
-          <div class="status-pattern down">
+          <div class="status-pattern down" th:classappend="${statusData.statusClass == 'down'} ? 'active' : ''">
             <h3>Take action!</h3>
           </div>
-          <div class="status-pattern nice">
+          <div class="status-pattern nice" th:classappend="${statusData.statusClass == 'nice'} ? 'active' : ''">
             <h3>Nice!!</h3>
           </div>
-          <div class="status-pattern high">
+          <div class="status-pattern high" th:classappend="${statusData.statusClass == 'high'} ? 'active' : ''">
             <h3>Take it easy!</h3>
           </div>
         </div>
