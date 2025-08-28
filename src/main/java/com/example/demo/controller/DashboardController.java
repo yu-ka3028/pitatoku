@@ -26,7 +26,9 @@ public class DashboardController {
   //ルーティング
   @RequestMapping("/dashboard")
   public String dashboard(Model model) {
-    List<Dashboard> items = dashboardRepository.findAll();
+    List<Dashboard> items = dashboardRepository.findAll().stream()
+        .filter(item -> item.getStatus() != Status.COMPLETED)
+        .collect(java.util.stream.Collectors.toList());
     Map<String, Object> statusData = allStatusService.calculateInventoryStatus();
     model.addAttribute("items", items);
     model.addAttribute("statusData", statusData);
@@ -65,6 +67,7 @@ public class DashboardController {
       case "interested": return Status.INTERESTED;
       case "purchased": return Status.PURCHASED;
       case "working": return Status.WORKING;
+      case "completed": return Status.COMPLETED;
       default: return Status.INTERESTED;
     }
   }
@@ -89,6 +92,15 @@ public class DashboardController {
   @PostMapping("/delete-item")
   public String deleteItem(@RequestParam("id") Long id){
     dashboardRepository.deleteById(id);
+    return "redirect:/dashboard";
+  }
+
+  @PostMapping("/complete-item")
+  public String completeItem(@RequestParam("id") Long id){
+    Dashboard item = dashboardRepository.findById(id).orElseThrow(() -> new RuntimeException("アイテムが見つかりません"));
+    item.setStatus(Status.COMPLETED);
+    item.setUpdatedAt(LocalDateTime.now());
+    dashboardRepository.save(item);
     return "redirect:/dashboard";
   }
 }

@@ -19,13 +19,34 @@
         <a href="/add-item" class="add-item-btn">+追加</a>
       </section>
 
+      <!-- 削除モーダル -->
       <div class="modal-overlay" id="deleteModal">
         <div class="delete-modal">
           <h3>削除の確認</h3>
           <p id="deleteMessage">このアイテムを削除しますか？</p>
           <div class="modal-buttons">
-            <button class="modal-btn cancel" onclick="closeDeleteModal()">キャンセル</button>
-            <button class="modal-btn delete" onclick="confirmDelete()">削除</button>
+            <button class="modal-btn cancel" onclick="closeDeleteModal()">
+              キャンセル
+            </button>
+            <button class="modal-btn delete" onclick="confirmDelete()">
+              削除
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 完了モーダル -->
+      <div class="modal-overlay" id="completeModal">
+        <div class="complete-modal">
+          <h3>完了の確認</h3>
+          <p id="completeMessage">このアイテムを完了としてマークしますか？</p>
+          <div class="modal-buttons">
+            <button class="modal-btn cancel" onclick="closeCompleteModal()">
+              キャンセル
+            </button>
+            <button class="modal-btn complete" onclick="confirmComplete()">
+              完了
+            </button>
           </div>
         </div>
       </div>
@@ -59,12 +80,15 @@
                 <th>メモ</th>
                 <th>更新日時</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="item : ${items}">
                 <td>
-                  <button class="delete-btn" th:data-id="${item.id}" th:data-name="${item.itemName}">削除</button>
+                  <button class="delete-btn" th:data-id="${item.id}" th:data-name="${item.itemName}">
+                    削除
+                  </button>
                 </td>
                 <td th:text="${item.itemName}">アイテム名</td>
                 <td th:text="${item.status.displayName}">状態</td>
@@ -73,9 +97,14 @@
                 <td>
                   <a th:href="@{/edit-item(id=${item.id})}" class="edit-btn">編集</a>
                 </td>
+                <td>
+                  <button class="complete-btn" th:data-id="${item.id}" th:data-name="${item.itemName}">
+                    完了
+                  </button>
+                </td>
               </tr>
-              <tr th:if="${#lists.isEmpty(items)}"></tr>
-                <td colspan="6" class="no-items">アイテムがありません</td>
+              <tr th:if="${#lists.isEmpty(items)}">
+                <td colspan="7" class="no-items">アイテムがありません</td>
               </tr>
             </tbody>
           </table>

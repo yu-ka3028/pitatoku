@@ -79,16 +79,6 @@
   text-overflow: ellipsis;
 }
 
-.status-pattern p {
-  margin-bottom: 15px;
-  opacity: 0.8;
-}
-
-.status-pattern .count {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
 /* 状態カードの色分け（アクティブ時） */
 .status-pattern.down.active {
   background: linear-gradient(135deg, #ff9800, #f57c00);
@@ -140,26 +130,19 @@
   background: #f8f9fa;
   font-weight: 600;
   color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .item-table tr:hover {
   background: #f8f9fa;
 }
 
-/* 状態バッジ */
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: inline-block;
-  background: #e3f2fd;
-  color: #1976d2;
-}
-
 /* 操作ボタン */
 .edit-btn,
-.delete-btn {
+.delete-btn,
+.complete-btn {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
@@ -167,6 +150,9 @@
   font-size: 0.9rem;
   transition: all 0.3s ease;
   margin: 2px;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 60px;
 }
 
 .edit-btn {
@@ -176,6 +162,7 @@
 
 .edit-btn:hover {
   background: #1976d2;
+  transform: translateY(-1px);
 }
 
 .delete-btn {
@@ -185,41 +172,28 @@
 
 .delete-btn:hover {
   background: #d32f2f;
+  transform: translateY(-1px);
 }
 
-/* ダッシュボード専用のレスポンシブ設定 */
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 2rem;
-  }
-
-  .status-overview {
-    flex-direction: column;
-  }
-
-  .item-table {
-    font-size: 0.9rem;
-  }
-
-  .item-table th,
-  .item-table td {
-    padding: 10px 8px;
-  }
-
-  .edit-btn,
-  .delete-btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
+.complete-btn {
+  background: #28a745;
+  color: white;
 }
 
-/* ダッシュボード専用のアニメーション */
-.status-pattern,
-.item-list {
-  animation: fadeIn 0.6s ease-out;
+.complete-btn:hover {
+  background: #218838;
+  transform: translateY(-1px);
 }
 
-/* 削除確認モーダル */
+/* 空の状態 */
+.no-items {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-style: italic;
+}
+
+/* モーダル共通スタイル */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -231,13 +205,15 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
 }
 
 .modal-overlay.show {
   display: flex;
 }
 
-.delete-modal {
+.delete-modal,
+.complete-modal {
   background: white;
   border-radius: 12px;
   padding: 30px;
@@ -259,13 +235,15 @@
   }
 }
 
-.delete-modal h3 {
+.delete-modal h3,
+.complete-modal h3 {
   margin: 0 0 20px 0;
   color: #333;
   font-size: 1.3rem;
 }
 
-.delete-modal p {
+.delete-modal p,
+.complete-modal p {
   margin: 0 0 25px 0;
   color: #666;
   line-height: 1.5;
@@ -304,4 +282,129 @@
 
 .modal-btn.delete:hover {
   background: #d32f2f;
+}
+
+.modal-btn.complete {
+  background: #28a745;
+  color: white;
+}
+
+.modal-btn.complete:hover {
+  background: #218838;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .status-cards {
+    flex-direction: column;
+    border-radius: 15px;
+  }
+
+  .status-pattern {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    min-height: 60px;
+  }
+
+  .status-pattern:last-child {
+    border-bottom: none;
+  }
+
+  .item-table {
+    font-size: 0.9rem;
+  }
+
+  .item-table th,
+  .item-table td {
+    padding: 10px 8px;
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .complete-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    min-width: 50px;
+  }
+
+  /* モバイルではボタンテキストをアイコンに変更 */
+  .edit-btn::before {
+    content: '✏️';
+  }
+
+  .delete-btn::before {
+    content: '🗑️';
+  }
+
+  .complete-btn::before {
+    content: '✅';
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .complete-btn {
+    font-size: 0;
+  }
+
+  .edit-btn::before,
+  .delete-btn::before,
+  .complete-btn::before {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  .status-overview,
+  .item-list {
+    padding: 20px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
+
+  .modal-btn {
+    width: 100%;
+  }
+}
+
+/* アニメーション */
+.status-pattern,
+.item-list {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* アクセシビリティ改善 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* フォーカス表示の改善 */
+button:focus,
+a:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
 }
