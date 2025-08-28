@@ -19,6 +19,7 @@ public class AllStatusService {
     private DashboardRepository dashboardRepository;
     
     public Map<String, Object> calculateInventoryStatus() {
+        // 完了以外のアイテムのみを対象とする（完了アイテムは在庫計算から除外）
         long interestedCount = dashboardRepository.countByStatus(Status.INTERESTED);
         long purchasedCount = dashboardRepository.countByStatus(Status.PURCHASED);
         long workingCount = dashboardRepository.countByStatus(Status.WORKING);
@@ -44,13 +45,11 @@ public class AllStatusService {
         result.put("purchasedCount", purchasedCount);
         result.put("workingCount", workingCount);
         
-        // コンソール出力
-        System.out.println("=== 在庫ステータス判定結果 ===");
-        System.out.println("ToMore: " + interestedCount + "件");
-        System.out.println("ToDo: " + purchasedCount + "件");
-        System.out.println("Now!!: " + workingCount + "件");
-        System.out.println("判定結果: " + status + " (" + statusClass + ")");
-        System.out.println("================================");
+        // ログ出力（コンソール出力を削減してメモリ使用量を削減）
+        logger.info("=== 在庫ステータス判定結果 ===");
+        logger.info("ToMore: {}件, ToDo: {}件, Now!!: {}件", interestedCount, purchasedCount, workingCount);
+        logger.info("判定結果: {} ({})", status, statusClass);
+        logger.info("================================");
         
         return result;
     }

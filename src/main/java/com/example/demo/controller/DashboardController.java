@@ -26,9 +26,8 @@ public class DashboardController {
   //ルーティング
   @RequestMapping("/dashboard")
   public String dashboard(Model model) {
-    List<Dashboard> items = dashboardRepository.findAll().stream()
-        .filter(item -> item.getStatus() != Status.COMPLETED)
-        .collect(java.util.stream.Collectors.toList());
+    // 完了以外のアイテムのみを取得（フィルタリングをDBレベルで実行）
+    List<Dashboard> items = dashboardRepository.findByStatusNot(Status.COMPLETED);
     Map<String, Object> statusData = allStatusService.calculateInventoryStatus();
     model.addAttribute("items", items);
     model.addAttribute("statusData", statusData);
