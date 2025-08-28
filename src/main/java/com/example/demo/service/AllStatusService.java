@@ -4,8 +4,8 @@ import com.example.demo.model.Status;
 import com.example.demo.repository.DashboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 @Service
 public class AllStatusService {
 
-    // private static final Logger logger = LoggerFactory.getLogger(AllStatusService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AllStatusService.class);
     
     @Autowired
     private DashboardRepository dashboardRepository;
@@ -45,12 +45,12 @@ public class AllStatusService {
         result.put("workingCount", workingCount);
         
         // コンソール出力
-        // System.out.println("=== 在庫ステータス判定結果 ===");
-        // System.out.println("ToMore: " + interestedCount + "件");
-        // System.out.println("ToDo: " + purchasedCount + "件");
-        // System.out.println("Now!!: " + workingCount + "件");
-        // System.out.println("判定結果: " + status + " (" + statusClass + ")");
-        // System.out.println("================================");
+        System.out.println("=== 在庫ステータス判定結果 ===");
+        System.out.println("ToMore: " + interestedCount + "件");
+        System.out.println("ToDo: " + purchasedCount + "件");
+        System.out.println("Now!!: " + workingCount + "件");
+        System.out.println("判定結果: " + status + " (" + statusClass + ")");
+        System.out.println("================================");
         
         return result;
     }
