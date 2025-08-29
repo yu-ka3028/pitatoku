@@ -55,13 +55,22 @@
       <section class="status-overview">
         <h2>全体の状態</h2>
         <div class="status-cards">
-          <div class="status-pattern down" th:classappend="${statusData.statusClass == 'down'} ? 'active' : ''">
+          <div
+            class="status-pattern down"
+            th:classappend="${statusData.statusClass == 'down'} ? 'active' : ''"
+          >
             <h3>Take action!</h3>
           </div>
-          <div class="status-pattern nice" th:classappend="${statusData.statusClass == 'nice'} ? 'active' : ''">
+          <div
+            class="status-pattern nice"
+            th:classappend="${statusData.statusClass == 'nice'} ? 'active' : ''"
+          >
             <h3>Nice!!</h3>
           </div>
-          <div class="status-pattern high" th:classappend="${statusData.statusClass == 'high'} ? 'active' : ''">
+          <div
+            class="status-pattern high"
+            th:classappend="${statusData.statusClass == 'high'} ? 'active' : ''"
+          >
             <h3>Take it easy!</h3>
           </div>
         </div>
@@ -86,7 +95,11 @@
             <tbody>
               <tr th:each="item : ${items}">
                 <td>
-                  <button class="delete-btn" th:data-id="${item.id}" th:data-name="${item.itemName}">
+                  <button
+                    class="delete-btn"
+                    th:data-id="${item.id}"
+                    th:data-name="${item.itemName}"
+                  >
                     削除
                   </button>
                 </td>
@@ -95,10 +108,16 @@
                 <td th:text="${item.memo}">メモ</td>
                 <td th:text="${item.updatedAt}">更新日時</td>
                 <td>
-                  <a th:href="@{/edit-item(id=${item.id})}" class="edit-btn">編集</a>
+                  <a th:href="@{/edit-item(id=${item.id})}" class="edit-btn"
+                    >編集</a
+                  >
                 </td>
                 <td>
-                  <button class="complete-btn" th:data-id="${item.id}" th:data-name="${item.itemName}">
+                  <button
+                    class="complete-btn"
+                    th:data-id="${item.id}"
+                    th:data-name="${item.itemName}"
+                  >
                     完了
                   </button>
                 </td>
