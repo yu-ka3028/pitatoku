@@ -22,6 +22,11 @@
 ## データベース設計の詳細
 
 ### Dashboard エンティティの設計理由
+補足：そもそも@Entityとは[公式](https://spring-boot.jp/database/entity-repository/36)
+SQL文を直接書かなくても、Javaのコードだけでテーブル設計可能。（さらにリポジトリでデータの保存・更新・検索・削除などを操作可能）
+- Railsのモデル：ActiveRecordを使って、RubyコードでDB操作
+- Javaのエンティティ：JPAを使って、JavaコードでDB操作
+Spring MVCと組み合わせることでコード保守性と可読性を向上
 
 #### フィールド選択の理由
 
@@ -171,6 +176,9 @@ return "redirect:/dashboard";
 ## リポジトリ層の設計理由
 
 ### DashboardRepository の実装
+補足：そもそもリポジトリとは[公式](https://spring-boot.jp/basics/annotations/53#mokuji_5)
+- Spring Data JPAが提供するインターフェース（JpaRepository）を継承して、エンティティのデータを保存(save)・更新・検索(findById)・削除可能にする
+- Springのデータアクセス層におけるエラーハンドリングを簡単にする
 
 #### カスタムクエリメソッドの選択
 
@@ -201,6 +209,7 @@ public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
 - **学習コスト**: チーム内で理解しやすい
 
 ### CSS 設計の判断
+※基本的にはAIにお任せ中...
 
 ```css
 /* 状態別の色分け */
@@ -257,6 +266,7 @@ logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
 ### docker-compose.yaml の設計判断
 
 #### イメージ切り替えの理由
+./gradlew bootRunで起動するとdocker使用しないため、紛らわしいので切り替えで開発
 
 ```yaml
 # ローカル開発用
@@ -273,6 +283,7 @@ image: 293210009733.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
 - **管理容易性**: コメントアウトで簡単な切り替え
 
 #### ヘルスチェックの実装
+db起動前に次の処理に入り接続エラーとなったため導入
 
 ```yaml
 healthcheck:
