@@ -41,6 +41,8 @@ public class Dashboard {
   private LocalDateTime updatedAt; // 最終更新日時
 }
 ```
+- private Status status;
+  これはStatus.javaのStatusクラスからenum定義を引っ張ってる
 
 **設計判断**:
 
@@ -59,15 +61,42 @@ public class Dashboard {
 ### Status 列挙型の設計
 
 #### 状態の定義理由
-
-```java
-public enum Status {
-  INTERESTED("ToMore"),   // 気になる → 購入検討中
-  PURCHASED("ToDo"),      // 購入済み → 作業待ち
-  WORKING("Now!!"),       // 作業中 → 現在進行中
-  COMPLETED("完了");       // 完了 → 終了済み
-}
-```
+1. デフォルト
+  ```java
+  public enum Status {
+    INTERESTED("ToMore"),
+    PURCHASED("ToDo"), 
+    WORKING("Now!!"),
+    COMPLETED("完了");
+  }
+  ```
+2. 積み本
+  ```java
+  public enum Status {
+    INTERESTED("未購入"),   // 気になる → 購入検討中
+    PURCHASED("購入済み"),      // 購入済み → 作業待ち
+    WORKING("作業中"),       // 作業中 → 現在進行中
+    COMPLETED("完了");       // 完了 → 終了済み
+  }
+  ```
+3. 作業管理
+  ```java
+  public enum Status {
+    INTERESTED("ToMore"),
+    PURCHASED("ToDo"), 
+    WORKING("Now!!"),
+    COMPLETED("完了");
+  }
+  ```
+4. 生活品在庫管理
+  ```java
+  public enum Status {
+    INTERESTED("あれば欲しい"),
+    PURCHASED("在庫なし"), 
+    WORKING("在庫あり"),
+    COMPLETED("完了");
+  }
+  ```
 
 **状態遷移の設計思想**:
 
