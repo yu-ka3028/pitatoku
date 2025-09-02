@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import java.time.LocalDateTime;
@@ -101,5 +102,16 @@ public class DashboardController {
     item.setUpdatedAt(LocalDateTime.now());
     dashboardRepository.save(item);
     return "redirect:/dashboard";
+  }
+
+  @GetMapping("/api/status/display-name")
+  public Map<String, String> getStatusDisplayName(
+    @RequestParam String status, 
+    @RequestParam String type) {
+    
+    Status statusEnum = Status.valueOf(status);
+    String displayName = statusEnum.getDisplayNameByType(type);
+    
+    return Map.of("displayName", displayName);
   }
 }

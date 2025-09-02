@@ -408,3 +408,31 @@ a:focus {
   outline: 2px solid #667eea;
   outline-offset: 2px;
 }
+
+/* 用途選択ドロップダウンのスタイル */
+.status-type-select {
+  display: block;
+  margin-top: 5px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.status-type-select:hover {
+  border-color: #999;
+}
+
+.status-type-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* テーブルヘッダーの状態列のスタイル調整 */
+.item-table th:nth-child(3) {
+  min-width: 120px;
+  vertical-align: top;
+}
