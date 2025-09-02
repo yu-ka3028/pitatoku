@@ -107,6 +107,77 @@ function confirmComplete() {
   }
 }
 
+// 用途変更時にステータス表示を更新
+function updateStatusDisplay() {
+  const selectedType = document.getElementById('statusType').value;
+  const statusCells = document.querySelectorAll('td:nth-child(3)'); // 状態列のセルを取得
+
+  statusCells.forEach((cell) => {
+    const currentText = cell.textContent;
+    let newText = currentText;
+
+    // 現在の表示名から用途別の表示名に変更
+    if (selectedType === 'books') {
+      newText = getBookDisplayName(currentText);
+    } else if (selectedType === 'tasks') {
+      newText = getTasksDisplayName(currentText);
+    } else if (selectedType === 'inventory') {
+      newText = getInventoryDisplayName(currentText);
+    } else {
+      // デフォルトの場合は元の表示名を復元
+      newText = getDefaultDisplayName(currentText);
+    }
+
+    cell.textContent = newText;
+  });
+}
+
+// 積み本用の表示名を取得
+function getBookDisplayName(currentText) {
+  const statusMap = {
+    ToMore: '未購入',
+    ToDo: '購入済み',
+    'Now!!': '作業中',
+    完了: '完了',
+  };
+  return statusMap[currentText] || currentText;
+}
+
+// 作業管理用の表示名を取得
+function getTasksDisplayName(currentText) {
+  const statusMap = {
+    ToMore: 'ToMore',
+    ToDo: 'ToDo',
+    'Now!!': 'Now!!',
+    完了: '完了',
+  };
+  return statusMap[currentText] || currentText;
+}
+
+// 生活品在庫管理用の表示名を取得
+function getInventoryDisplayName(currentText) {
+  const statusMap = {
+    ToMore: 'あれば欲しい',
+    ToDo: '在庫なし',
+    'Now!!': '在庫あり',
+    完了: '完了',
+  };
+  return statusMap[currentText] || currentText;
+}
+
+// デフォルトの表示名を取得
+function getDefaultDisplayName(currentText) {
+  const statusMap = {
+    未購入: 'ToMore',
+    購入済み: 'ToDo',
+    作業中: 'Now!!',
+    あれば欲しい: 'ToMore',
+    在庫なし: 'ToDo',
+    在庫あり: 'Now!!',
+  };
+  return statusMap[currentText] || currentText;
+}
+
 // 削除モーダル外クリックで閉じる
 document.getElementById('deleteModal').addEventListener('click', function (e) {
   if (e.target === this) {

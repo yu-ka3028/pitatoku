@@ -1,9 +1,12 @@
 services:
   app:
-    # image: pitatoku:latest
-    image: 293210009733.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
+    build: .
+    # image: 293210009733.dkr.ecr.ap-northeast-1.amazonaws.com/pitatoku:latest
     ports:
       - '8085:8080'
+    volumes:
+      - ./src/main/resources/templates:/app/src/main/resources/templates
+    working_dir: /app
     depends_on:
       db:
         condition: service_healthy
@@ -12,6 +15,10 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
 
+      SPRING_THYMELEAF_PREFIX: file:/app/src/main/resources/templates/
+      SPRING_THYMELEAF_CACHE: false
+      SPRING_THYMELEAF_MODE: HTML
+      SPRING_THYMELEAF_ENCODING: UTF-8
   db:
     image: mysql:8.0
     environment:

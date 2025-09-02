@@ -10,7 +10,7 @@
   <body>
     <div class="container">
       <header class="header">
-        <h1>ぴた得</h1>
+        <h1>ぴた得t</h1>
         <p class="subtitle">なんでもピタッと在庫管理</p>
       </header>
 
@@ -85,7 +85,15 @@
               <tr>
                 <th></th>
                 <th>名前</th>
-                <th>状態</th>
+                <th>
+                  状態
+                  <select id="statusType" onchange="updateStatusDisplay()">
+                    <option value="default">デフォルト</option>
+                    <option value="books">積み本</option>
+                    <option value="tasks">作業管理</option>
+                    <option value="inventory">生活品在庫管理</option>
+                  </select>
+                </th>
                 <th>メモ</th>
                 <th>更新日時</th>
                 <th></th>
