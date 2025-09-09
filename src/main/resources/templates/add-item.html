@@ -30,7 +30,11 @@
             </div>
             <div class="form-group">
               <label for="item-status">状態</label>
-              <select id="statusType" onchange="updateStatusDisplay()">
+              <select
+                id="statusType"
+                name="status_type"
+                onchange="updateStatusDisplay()"
+              >
                 <option value="default">デフォルト</option>
                 <option value="books">積み本</option>
                 <option value="tasks">作業管理</option>

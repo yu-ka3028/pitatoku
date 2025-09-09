@@ -110,7 +110,7 @@ function confirmComplete() {
 // 用途変更時にステータス表示を更新
 function updateStatusDisplay() {
   const selectedType = document.getElementById('statusType').value;
-  const statusCells = document.querySelectorAll('.status-cell'); // 状態列のセルを取得
+  const statusCells = document.querySelectorAll('.status-cell');
 
   console.log('updateStatusDisplay called with type:', selectedType);
   console.log('Found status cells:', statusCells.length);

@@ -27,17 +27,17 @@ public class Dashboard {
   @Column(name = "memo")
   private String memo;
 
-  @Column(name = "item_type", nullable = false)
-  private String itemType;
+  @Column(name = "status_type", nullable = false)
+  private String statusType;
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  public Dashboard(String itemName, Status status, String memo, String itemType, LocalDateTime updatedAt){
+  public Dashboard(String itemName, Status status, String memo, String statusType, LocalDateTime updatedAt){
     this.itemName = itemName;
     this.status = status;
     this.memo = memo;
-    this.itemType = itemType;
+    this.statusType = statusType;
     this.updatedAt = updatedAt;
   }
 

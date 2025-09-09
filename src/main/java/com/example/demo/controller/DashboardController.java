@@ -53,11 +53,12 @@ public class DashboardController {
   public String handleForm(
     @RequestParam("item_name") String itemName,
     @RequestParam("status") String status,
-    @RequestParam(value = "memo", required = false) String memo
+    @RequestParam(value = "memo", required = false) String memo,
+    @RequestParam(value = "status_type", required = false) String statusType
   ){
     LocalDateTime updatedAt = LocalDateTime.now();
 
-  Dashboard newItem = new Dashboard(itemName, getStatus(status), memo != null ? memo : "", updatedAt);
+  Dashboard newItem = new Dashboard(itemName, getStatus(status), memo != null ? memo : "", statusType != null ? statusType : "default", updatedAt);
   dashboardRepository.save(newItem);
   return "redirect:/dashboard";
   }
@@ -77,12 +78,14 @@ public class DashboardController {
     @RequestParam("id") Long id,
     @RequestParam("item_name") String itemName,
     @RequestParam("status") String status,
-    @RequestParam(value = "memo", required = false) String memo
+    @RequestParam(value = "memo", required = false) String memo,
+    @RequestParam(value = "status_type", required = false) String statusType
   ){
     Dashboard item = dashboardRepository.findById(id).orElseThrow(() -> new RuntimeException("アイテムが見つかりません"));
     item.setItemName(itemName);
     item.setStatus(getStatus(status));
     item.setMemo(memo != null ? memo : "");
+    item.setStatusType(statusType != null ? statusType : "default");
     item.setUpdatedAt(LocalDateTime.now());
 
     dashboardRepository.save(item);

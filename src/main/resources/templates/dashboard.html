@@ -17,15 +17,6 @@
       <section class="item-list">
         <h2>アイテム一覧</h2>
         <div class="item-list-container">
-          <div class="status-type-selector">
-            <label for="statusType">用途:</label>
-            <select id="statusType">
-              <option value="default">デフォルト</option>
-              <option value="books">積み本</option>
-              <option value="tasks">作業管理</option>
-              <option value="inventory">生活品在庫管理</option>
-            </select>
-          </div>
           <table class="item-table">
             <thead>
               <tr>
@@ -53,6 +44,7 @@
                 <td
                   class="status-cell"
                   th:data-status="${item.status}"
+                  th:data-status-type="${item.statusType}"
                   th:text="${item.status.displayName}"
                 >
                   状態
@@ -124,10 +116,8 @@
       function updateStatusDisplay() {
         console.log('=== updateStatusDisplay START ===');
 
-        const selectedType = document.getElementById('statusType').value;
         const statusCells = document.querySelectorAll('.status-cell');
 
-        console.log('Selected type:', selectedType);
         console.log('Found status cells:', statusCells.length);
 
         if (statusCells.length === 0) {
@@ -137,32 +127,34 @@
 
         statusCells.forEach((cell, index) => {
           const statusEnum = cell.getAttribute('data-status');
+          const statusType = cell.getAttribute('data-status-type');
           const originalText = cell.textContent.trim();
 
           console.log(`Cell ${index}:`, {
             statusEnum: statusEnum,
+            statusType: statusType,
             originalText: originalText,
           });
 
           let newText = '';
           let typeLabel = '';
 
-          // 用途別の表示名に変更
-          if (selectedType === 'books') {
+          // 各アイテムの登録時の用途に応じた表示名に変更
+          if (statusType === 'books') {
             if (statusEnum === 'INTERESTED') newText = '未購入';
             else if (statusEnum === 'PURCHASED') newText = '購入済み';
             else if (statusEnum === 'WORKING') newText = '作業中';
             else if (statusEnum === 'COMPLETED') newText = '完了';
             else newText = originalText;
             typeLabel = '積み本';
-          } else if (selectedType === 'tasks') {
+          } else if (statusType === 'tasks') {
             if (statusEnum === 'INTERESTED') newText = 'ToMore';
             else if (statusEnum === 'PURCHASED') newText = 'ToDo';
             else if (statusEnum === 'WORKING') newText = 'Now!!';
             else if (statusEnum === 'COMPLETED') newText = '完了';
             else newText = originalText;
             typeLabel = '作業管理';
-          } else if (selectedType === 'inventory') {
+          } else if (statusType === 'inventory') {
             if (statusEnum === 'INTERESTED') newText = 'あれば欲しい';
             else if (statusEnum === 'PURCHASED') newText = '在庫なし';
             else if (statusEnum === 'WORKING') newText = '在庫あり';
@@ -174,9 +166,9 @@
             typeLabel = 'デフォルト';
           }
 
-          // 用途が選択されている場合は「状態/用途」の形式で表示
-          if (selectedType !== 'default') {
-            cell.textContent = `${newText}`;
+          // 「状態/用途」の形式で表示
+          if (statusType !== 'default') {
+            cell.textContent = `${newText}/${typeLabel}`;
           } else {
             cell.textContent = newText;
           }
