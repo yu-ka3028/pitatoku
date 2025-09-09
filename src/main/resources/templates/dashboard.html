@@ -3,90 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ぴた得 Pitatoku</title>
+    <title>ダッシュボード - ぴた得</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/dashboard.css" />
   </head>
   <body>
     <div class="container">
       <header class="header">
-        <h1>ぴた得t</h1>
-        <p class="subtitle">なんでもピタッと在庫管理</p>
+        <h1><a href="/dashboard" class="header-link">ぴた得</a></h1>
+        <p class="subtitle">ダッシュボード</p>
       </header>
 
-      <!-- アイテム追加ボタン -->
-      <section class="add-item-section">
-        <a href="/add-item" class="add-item-btn">+追加</a>
-      </section>
-
-      <!-- 削除モーダル -->
-      <div class="modal-overlay" id="deleteModal">
-        <div class="delete-modal">
-          <h3>削除の確認</h3>
-          <p id="deleteMessage">このアイテムを削除しますか？</p>
-          <div class="modal-buttons">
-            <button class="modal-btn cancel" onclick="closeDeleteModal()">
-              キャンセル
-            </button>
-            <button class="modal-btn delete" onclick="confirmDelete()">
-              削除
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 完了モーダル -->
-      <div class="modal-overlay" id="completeModal">
-        <div class="complete-modal">
-          <h3>完了の確認</h3>
-          <p id="completeMessage">このアイテムを完了としてマークしますか？</p>
-          <div class="modal-buttons">
-            <button class="modal-btn cancel" onclick="closeCompleteModal()">
-              キャンセル
-            </button>
-            <button class="modal-btn complete" onclick="confirmComplete()">
-              完了
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 全体の状況 -->
-      <section class="status-overview">
-        <h2>全体の状態</h2>
-        <div class="status-cards">
-          <div
-            class="status-pattern down"
-            th:classappend="${statusData.statusClass == 'down'} ? 'active' : ''"
-          >
-            <h3>Take action!</h3>
-          </div>
-          <div
-            class="status-pattern nice"
-            th:classappend="${statusData.statusClass == 'nice'} ? 'active' : ''"
-          >
-            <h3>Nice!!</h3>
-          </div>
-          <div
-            class="status-pattern high"
-            th:classappend="${statusData.statusClass == 'high'} ? 'active' : ''"
-          >
-            <h3>Take it easy!</h3>
-          </div>
-        </div>
-      </section>
-
-      <!-- アイテム一覧 -->
       <section class="item-list">
         <h2>アイテム一覧</h2>
         <div class="item-list-container">
-          <table class="item-table">
-            <select id="statusType" onchange="updateStatusDisplay()">
+          <div class="status-type-selector">
+            <label for="statusType">用途:</label>
+            <select id="statusType">
               <option value="default">デフォルト</option>
               <option value="books">積み本</option>
               <option value="tasks">作業管理</option>
               <option value="inventory">生活品在庫管理</option>
             </select>
+          </div>
+          <table class="item-table">
             <thead>
               <tr>
                 <th></th>
@@ -134,16 +74,220 @@
                   </button>
                 </td>
               </tr>
-              <tr th:if="${#lists.isEmpty(items)}">
-                <td colspan="7" class="no-items">アイテムがありません</td>
-              </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="add-item-section">
           <!-- アイテム追加ボタン -->
           <a href="/add-item" class="add-item-btn">+追加</a>
         </div>
       </section>
     </div>
-    <script src="/js/dashboard.js"></script>
+
+    <script>
+      console.log('=== DASHBOARD SCRIPT START ===');
+
+      // 強制的にテスト実行
+      function forceTest() {
+        console.log('=== FORCE TEST START ===');
+
+        // 要素の存在確認
+        const statusTypeSelect = document.getElementById('statusType');
+        const statusCells = document.querySelectorAll('.status-cell');
+
+        console.log('statusTypeSelect:', statusTypeSelect);
+        console.log('statusCells count:', statusCells.length);
+
+        if (statusTypeSelect) {
+          console.log('statusTypeSelect value:', statusTypeSelect.value);
+          console.log(
+            'statusTypeSelect options:',
+            statusTypeSelect.options.length
+          );
+        }
+
+        if (statusCells.length > 0) {
+          statusCells.forEach((cell, index) => {
+            console.log(`Cell ${index}:`, {
+              textContent: cell.textContent,
+              dataStatus: cell.getAttribute('data-status'),
+              className: cell.className,
+            });
+          });
+        }
+
+        console.log('=== FORCE TEST END ===');
+      }
+
+      // 用途変更時にステータス表示を更新
+      function updateStatusDisplay() {
+        console.log('=== updateStatusDisplay START ===');
+
+        const selectedType = document.getElementById('statusType').value;
+        const statusCells = document.querySelectorAll('.status-cell');
+
+        console.log('Selected type:', selectedType);
+        console.log('Found status cells:', statusCells.length);
+
+        if (statusCells.length === 0) {
+          console.error('No status cells found!');
+          return;
+        }
+
+        statusCells.forEach((cell, index) => {
+          const statusEnum = cell.getAttribute('data-status');
+          const originalText = cell.textContent.trim();
+
+          console.log(`Cell ${index}:`, {
+            statusEnum: statusEnum,
+            originalText: originalText,
+          });
+
+          let newText = '';
+          let typeLabel = '';
+
+          // 用途別の表示名に変更
+          if (selectedType === 'books') {
+            if (statusEnum === 'INTERESTED') newText = '未購入';
+            else if (statusEnum === 'PURCHASED') newText = '購入済み';
+            else if (statusEnum === 'WORKING') newText = '作業中';
+            else if (statusEnum === 'COMPLETED') newText = '完了';
+            else newText = originalText;
+            typeLabel = '積み本';
+          } else if (selectedType === 'tasks') {
+            if (statusEnum === 'INTERESTED') newText = 'ToMore';
+            else if (statusEnum === 'PURCHASED') newText = 'ToDo';
+            else if (statusEnum === 'WORKING') newText = 'Now!!';
+            else if (statusEnum === 'COMPLETED') newText = '完了';
+            else newText = originalText;
+            typeLabel = '作業管理';
+          } else if (selectedType === 'inventory') {
+            if (statusEnum === 'INTERESTED') newText = 'あれば欲しい';
+            else if (statusEnum === 'PURCHASED') newText = '在庫なし';
+            else if (statusEnum === 'WORKING') newText = '在庫あり';
+            else if (statusEnum === 'COMPLETED') newText = '完了';
+            else newText = originalText;
+            typeLabel = '生活品在庫管理';
+          } else {
+            newText = originalText;
+            typeLabel = 'デフォルト';
+          }
+
+          // 用途が選択されている場合は「状態/用途」の形式で表示
+          if (selectedType !== 'default') {
+            cell.textContent = `${newText}`;
+          } else {
+            cell.textContent = newText;
+          }
+
+          console.log(`Cell ${index} updated:`, {
+            from: originalText,
+            to: cell.textContent,
+          });
+        });
+
+        console.log('=== updateStatusDisplay END ===');
+      }
+
+      // 即座にテスト実行
+      forceTest();
+
+      // DOMContentLoadedで初期化
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('=== DOMContentLoaded START ===');
+        forceTest();
+
+        const statusTypeSelect = document.getElementById('statusType');
+        if (statusTypeSelect) {
+          console.log('Adding event listener to statusTypeSelect');
+          statusTypeSelect.addEventListener('change', function () {
+            console.log('Status type changed to:', this.value);
+            updateStatusDisplay();
+          });
+
+          // 初期表示を更新
+          updateStatusDisplay();
+        } else {
+          console.error('statusTypeSelect not found!');
+        }
+
+        console.log('=== DOMContentLoaded END ===');
+      });
+
+      // 遅延実行
+      setTimeout(function () {
+        console.log('=== setTimeout START ===');
+        forceTest();
+        updateStatusDisplay();
+        console.log('=== setTimeout END ===');
+      }, 500);
+
+      console.log('=== DASHBOARD SCRIPT END ===');
+
+      // 削除ボタンの機能
+      function setupDeleteButtons() {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach((button) => {
+          button.addEventListener('click', function () {
+            const itemId = this.getAttribute('data-id');
+            const itemName = this.getAttribute('data-name');
+
+            if (confirm(`「${itemName}」を削除しますか？`)) {
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = '/delete-item';
+
+              const idInput = document.createElement('input');
+              idInput.type = 'hidden';
+              idInput.name = 'id';
+              idInput.value = itemId;
+
+              form.appendChild(idInput);
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
+      }
+
+      // 完了ボタンの機能
+      function setupCompleteButtons() {
+        const completeButtons = document.querySelectorAll('.complete-btn');
+        completeButtons.forEach((button) => {
+          button.addEventListener('click', function () {
+            const itemId = this.getAttribute('data-id');
+            const itemName = this.getAttribute('data-name');
+
+            if (confirm(`「${itemName}」を完了にしますか？`)) {
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = '/complete-item';
+
+              const idInput = document.createElement('input');
+              idInput.type = 'hidden';
+              idInput.name = 'id';
+              idInput.value = itemId;
+
+              form.appendChild(idInput);
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
+      }
+
+      // DOMContentLoadedでボタン機能を設定
+      document.addEventListener('DOMContentLoaded', function () {
+        setupDeleteButtons();
+        setupCompleteButtons();
+      });
+
+      // 遅延実行でもボタン機能を設定
+      setTimeout(function () {
+        setupDeleteButtons();
+        setupCompleteButtons();
+      }, 500);
+    </script>
   </body>
 </html>

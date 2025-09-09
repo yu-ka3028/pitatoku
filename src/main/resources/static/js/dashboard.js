@@ -112,23 +112,52 @@ function updateStatusDisplay() {
   const selectedType = document.getElementById('statusType').value;
   const statusCells = document.querySelectorAll('.status-cell'); // 状態列のセルを取得
 
+  console.log('updateStatusDisplay called with type:', selectedType);
+  console.log('Found status cells:', statusCells.length);
+
+  if (statusCells.length === 0) {
+    console.error(
+      'No status cells found! Check if .status-cell class is properly set.'
+    );
+    return;
+  }
+
   statusCells.forEach((cell) => {
     const statusEnum = cell.getAttribute('data-status');
     let newText = cell.textContent;
+    let typeLabel = '';
+
+    console.log(
+      'Processing cell with status:',
+      statusEnum,
+      'current text:',
+      cell.textContent
+    );
 
     // 用途別の表示名に変更
     if (selectedType === 'books') {
       newText = getBookDisplayNameByStatus(statusEnum);
+      typeLabel = '積み本';
     } else if (selectedType === 'tasks') {
       newText = getTasksDisplayNameByStatus(statusEnum);
+      typeLabel = '作業管理';
     } else if (selectedType === 'inventory') {
       newText = getInventoryDisplayNameByStatus(statusEnum);
+      typeLabel = '生活品在庫管理';
     } else {
       // デフォルトの場合は元の表示名を復元
       newText = getDefaultDisplayNameByStatus(statusEnum);
+      typeLabel = 'デフォルト';
     }
 
-    cell.textContent = newText;
+    // 用途が選択されている場合は「状態/用途」の形式で表示
+    if (selectedType !== 'default') {
+      cell.textContent = `${newText}/${typeLabel}`;
+    } else {
+      cell.textContent = newText;
+    }
+
+    console.log('Updated cell text to:', cell.textContent);
   });
 }
 
