@@ -31,23 +31,41 @@
             </div>
             <div class="form-group">
               <label for="item-status">状態</label>
+              <select id="statusType" onchange="updateStatusDisplay()">
+                <option value="default">デフォルト</option>
+                <option value="books">積み本</option>
+                <option value="tasks">作業管理</option>
+                <option value="inventory">生活品在庫管理</option>
+              </select>
               <select id="item-status" name="status" required>
                 <option value="">状態を選択</option>
                 <option
                   value="interested"
                   th:selected="${item.status == T(com.example.demo.model.Status).INTERESTED}"
+                  data-default="ToMore"
+                  data-books="未購入"
+                  data-tasks="ToMore"
+                  data-inventory="あれば欲しい"
                 >
                   ToMore
                 </option>
                 <option
                   value="purchased"
                   th:selected="${item.status == T(com.example.demo.model.Status).PURCHASED}"
+                  data-default="ToDo"
+                  data-books="購入済み"
+                  data-tasks="ToDo"
+                  data-inventory="在庫なし"
                 >
                   ToDo
                 </option>
                 <option
                   value="working"
                   th:selected="${item.status == T(com.example.demo.model.Status).WORKING}"
+                  data-default="Now!!"
+                  data-books="作業中"
+                  data-tasks="Now!!"
+                  data-inventory="在庫あり"
                 >
                   Now!!
                 </option>
@@ -72,6 +90,51 @@
         </div>
       </section>
     </div>
-    <!-- <script src="/js/add-item.js"></script> -->
+    <script src="/js/add-item.js"></script>
+    <script>
+      // デバッグ用：ページ読み込み完了を確認
+      console.log('edit-item page loaded');
+
+      // 用途変更時にステータス表示を更新
+      function updateStatusDisplay() {
+        const selectedType = document.getElementById('statusType').value;
+        const statusOptions = document.querySelectorAll(
+          '#item-status option[value]'
+        );
+
+        console.log('Selected type:', selectedType);
+        console.log('Found options:', statusOptions.length);
+
+        statusOptions.forEach((option) => {
+          let newText = option.textContent.trim();
+
+          if (selectedType === 'books') {
+            newText = option.getAttribute('data-books');
+          } else if (selectedType === 'tasks') {
+            newText = option.getAttribute('data-tasks');
+          } else if (selectedType === 'inventory') {
+            newText = option.getAttribute('data-inventory');
+          } else {
+            newText = option.getAttribute('data-default');
+          }
+
+          console.log(
+            'Updating option:',
+            option.value,
+            'from',
+            option.textContent.trim(),
+            'to',
+            newText
+          );
+          option.textContent = newText;
+        });
+      }
+
+      // ページ読み込み時に初期化
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOM loaded, initializing...');
+        updateStatusDisplay();
+      });
+    </script>
   </body>
 </html>

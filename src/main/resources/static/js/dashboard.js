@@ -110,72 +110,70 @@ function confirmComplete() {
 // 用途変更時にステータス表示を更新
 function updateStatusDisplay() {
   const selectedType = document.getElementById('statusType').value;
-  const statusCells = document.querySelectorAll('td:nth-child(3)'); // 状態列のセルを取得
+  const statusCells = document.querySelectorAll('.status-cell'); // 状態列のセルを取得
 
   statusCells.forEach((cell) => {
-    const currentText = cell.textContent;
-    let newText = currentText;
+    const statusEnum = cell.getAttribute('data-status');
+    let newText = cell.textContent;
 
-    // 現在の表示名から用途別の表示名に変更
+    // 用途別の表示名に変更
     if (selectedType === 'books') {
-      newText = getBookDisplayName(currentText);
+      newText = getBookDisplayNameByStatus(statusEnum);
     } else if (selectedType === 'tasks') {
-      newText = getTasksDisplayName(currentText);
+      newText = getTasksDisplayNameByStatus(statusEnum);
     } else if (selectedType === 'inventory') {
-      newText = getInventoryDisplayName(currentText);
+      newText = getInventoryDisplayNameByStatus(statusEnum);
     } else {
       // デフォルトの場合は元の表示名を復元
-      newText = getDefaultDisplayName(currentText);
+      newText = getDefaultDisplayNameByStatus(statusEnum);
     }
 
     cell.textContent = newText;
   });
 }
 
-// 積み本用の表示名を取得
-function getBookDisplayName(currentText) {
+// 積み本用の表示名を取得（Status enumから）
+function getBookDisplayNameByStatus(statusEnum) {
   const statusMap = {
-    ToMore: '未購入',
-    ToDo: '購入済み',
-    'Now!!': '作業中',
-    完了: '完了',
+    INTERESTED: '未購入',
+    PURCHASED: '購入済み',
+    WORKING: '作業中',
+    COMPLETED: '完了',
   };
-  return statusMap[currentText] || currentText;
+  return statusMap[statusEnum] || statusEnum;
 }
 
-// 作業管理用の表示名を取得
-function getTasksDisplayName(currentText) {
+// 作業管理用の表示名を取得（Status enumから）
+function getTasksDisplayNameByStatus(statusEnum) {
   const statusMap = {
-    ToMore: 'ToMore',
-    ToDo: 'ToDo',
-    'Now!!': 'Now!!',
-    完了: '完了',
+    INTERESTED: 'ToMore',
+    PURCHASED: 'ToDo',
+    WORKING: 'Now!!',
+    COMPLETED: '完了',
   };
-  return statusMap[currentText] || currentText;
+  return statusMap[statusEnum] || statusEnum;
 }
 
-// 生活品在庫管理用の表示名を取得
-function getInventoryDisplayName(currentText) {
+// 生活品在庫管理用の表示名を取得（Status enumから）
+function getInventoryDisplayNameByStatus(statusEnum) {
   const statusMap = {
-    ToMore: 'あれば欲しい',
-    ToDo: '在庫なし',
-    'Now!!': '在庫あり',
-    完了: '完了',
+    INTERESTED: 'あれば欲しい',
+    PURCHASED: '在庫なし',
+    WORKING: '在庫あり',
+    COMPLETED: '完了',
   };
-  return statusMap[currentText] || currentText;
+  return statusMap[statusEnum] || statusEnum;
 }
 
-// デフォルトの表示名を取得
-function getDefaultDisplayName(currentText) {
+// デフォルトの表示名を取得（Status enumから）
+function getDefaultDisplayNameByStatus(statusEnum) {
   const statusMap = {
-    未購入: 'ToMore',
-    購入済み: 'ToDo',
-    作業中: 'Now!!',
-    あれば欲しい: 'ToMore',
-    在庫なし: 'ToDo',
-    在庫あり: 'Now!!',
+    INTERESTED: 'ToMore',
+    PURCHASED: 'ToDo',
+    WORKING: 'Now!!',
+    COMPLETED: '完了',
   };
-  return statusMap[currentText] || currentText;
+  return statusMap[statusEnum] || statusEnum;
 }
 
 // 削除モーダル外クリックで閉じる

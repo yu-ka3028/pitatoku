@@ -81,19 +81,17 @@
         <h2>アイテム一覧</h2>
         <div class="item-list-container">
           <table class="item-table">
+            <select id="statusType" onchange="updateStatusDisplay()">
+              <option value="default">デフォルト</option>
+              <option value="books">積み本</option>
+              <option value="tasks">作業管理</option>
+              <option value="inventory">生活品在庫管理</option>
+            </select>
             <thead>
               <tr>
                 <th></th>
                 <th>名前</th>
-                <th>
-                  状態
-                  <select id="statusType" onchange="updateStatusDisplay()">
-                    <option value="default">デフォルト</option>
-                    <option value="books">積み本</option>
-                    <option value="tasks">作業管理</option>
-                    <option value="inventory">生活品在庫管理</option>
-                  </select>
-                </th>
+                <th>状態</th>
                 <th>メモ</th>
                 <th>更新日時</th>
                 <th></th>
@@ -112,7 +110,13 @@
                   </button>
                 </td>
                 <td th:text="${item.itemName}">アイテム名</td>
-                <td th:text="${item.status.displayName}">状態</td>
+                <td
+                  class="status-cell"
+                  th:data-status="${item.status}"
+                  th:text="${item.status.displayName}"
+                >
+                  状態
+                </td>
                 <td th:text="${item.memo}">メモ</td>
                 <td th:text="${item.updatedAt}">更新日時</td>
                 <td>
