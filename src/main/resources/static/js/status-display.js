@@ -1,13 +1,23 @@
-// 用途変更時にステータス表示を更新
+// 用途変更時にステータス表示を更新する共通関数
 function updateStatusDisplay() {
   const selectedType = document.getElementById('statusType').value;
-  const statusOptions = document.querySelectorAll('#item-status option[value]'); // 値を持つオプションのみを取得
+  const statusOptions = document.querySelectorAll('#item-status option[value]');
 
-  console.log('Selected type:', selectedType);
+  console.log('updateStatusDisplay called with type:', selectedType);
   console.log('Found options:', statusOptions.length);
 
   statusOptions.forEach((option) => {
-    let newText = option.textContent;
+    if (option.value === '') return; // 空のオプションはスキップ
+
+    let newText = '';
+    const currentText = option.textContent.trim();
+
+    console.log(
+      'Processing option:',
+      option.value,
+      'current text:',
+      currentText
+    );
 
     // 用途別の表示名に変更
     if (selectedType === 'books') {
@@ -17,7 +27,6 @@ function updateStatusDisplay() {
     } else if (selectedType === 'inventory') {
       newText = option.getAttribute('data-inventory');
     } else {
-      // デフォルトの場合は元の表示名を復元
       newText = option.getAttribute('data-default');
     }
 
@@ -25,16 +34,18 @@ function updateStatusDisplay() {
       'Updating option:',
       option.value,
       'from',
-      option.textContent,
+      currentText,
       'to',
       newText
     );
-    option.textContent = newText;
+
+    // innerHTMLを使用して確実に更新
+    option.innerHTML = newText;
   });
 }
 
 // ページ読み込み時に初期化
 document.addEventListener('DOMContentLoaded', function () {
-  // 初期状態でデフォルト表示を設定
+  console.log('Status display initialized');
   updateStatusDisplay();
 });

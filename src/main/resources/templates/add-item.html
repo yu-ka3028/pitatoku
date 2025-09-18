@@ -20,20 +20,65 @@
           <form class="item-form" action="/add-item" method="post">
             <div class="form-group">
               <label for="item-name">名前</label>
-              <input type="text" id="item-name" name="item_name" placeholder="アイテム名を入力" required>
+              <input
+                type="text"
+                id="item-name"
+                name="item_name"
+                placeholder="アイテム名を入力"
+                required
+              />
             </div>
             <div class="form-group">
               <label for="item-status">状態</label>
+              <select
+                id="statusType"
+                name="status_type"
+                onchange="updateStatusDisplay()"
+              >
+                <option value="default">デフォルト</option>
+                <option value="books">積み本</option>
+                <option value="tasks">作業管理</option>
+                <option value="inventory">生活品在庫管理</option>
+              </select>
               <select id="item-status" name="status" required>
                 <option value="">状態を選択</option>
-                <option value="interested">ToMore</option>
-                <option value="purchased">ToDo</option>
-                <option value="working">Now!!</option>
+                <option
+                  value="interested"
+                  data-default="ToMore"
+                  data-books="未購入"
+                  data-tasks="ToMore"
+                  data-inventory="あれば欲しい"
+                >
+                  ToMore
+                </option>
+                <option
+                  value="purchased"
+                  data-default="ToDo"
+                  data-books="購入済み"
+                  data-tasks="ToDo"
+                  data-inventory="在庫なし"
+                >
+                  ToDo
+                </option>
+                <option
+                  value="working"
+                  data-default="Now!!"
+                  data-books="作業中"
+                  data-tasks="Now!!"
+                  data-inventory="在庫あり"
+                >
+                  Now!!
+                </option>
               </select>
             </div>
             <div class="form-group">
               <label for="item-memo">メモ</label>
-              <textarea id="item-memo" name="memo" placeholder="メモを入力（任意）" rows="4"></textarea>
+              <textarea
+                id="item-memo"
+                name="memo"
+                placeholder="メモを入力（任意）"
+                rows="4"
+              ></textarea>
             </div>
 
             <div class="form-actions">
@@ -44,6 +89,51 @@
         </div>
       </section>
     </div>
-    <!-- <script src="/js/add-item.js"></script> -->
+    <script src="/js/add-item.js"></script>
+    <script>
+      // デバッグ用：ページ読み込み完了を確認
+      console.log('add-item page loaded');
+
+      // 用途変更時にステータス表示を更新
+      function updateStatusDisplay() {
+        const selectedType = document.getElementById('statusType').value;
+        const statusOptions = document.querySelectorAll(
+          '#item-status option[value]'
+        );
+
+        console.log('Selected type:', selectedType);
+        console.log('Found options:', statusOptions.length);
+
+        statusOptions.forEach((option) => {
+          let newText = option.textContent.trim();
+
+          if (selectedType === 'books') {
+            newText = option.getAttribute('data-books');
+          } else if (selectedType === 'tasks') {
+            newText = option.getAttribute('data-tasks');
+          } else if (selectedType === 'inventory') {
+            newText = option.getAttribute('data-inventory');
+          } else {
+            newText = option.getAttribute('data-default');
+          }
+
+          console.log(
+            'Updating option:',
+            option.value,
+            'from',
+            option.textContent.trim(),
+            'to',
+            newText
+          );
+          option.innerHTML = newText;
+        });
+      }
+
+      // ページ読み込み時に初期化
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOM loaded, initializing...');
+        updateStatusDisplay();
+      });
+    </script>
   </body>
 </html>
