@@ -15,6 +15,14 @@ public class AllStatusService {
 
     private static final Logger logger = LoggerFactory.getLogger(AllStatusService.class);
     
+    private static final int NICE_RATIO = 2;
+    private static final String TAKE_ACTION = "Take Action!";
+    private static final String TAKE_ACTION_CLASS = "down";
+    private static final String NICE = "Nice!!";
+    private static final String NICE_CLASS = "nice";
+    private static final String TAKE_EASY = "Take it easy!";
+    private static final String TAKE_EASY_CLASS = "high";
+    
     @Autowired
     private DashboardRepository dashboardRepository;
     
@@ -26,16 +34,16 @@ public class AllStatusService {
         
         String status;
         String statusClass;
-        
+
         if (purchasedCount <= workingCount || purchasedCount == 0) {
-            status = "Take Action!";
-            statusClass = "down";
-        } else if (purchasedCount == workingCount * 2) {
-            status = "Nice!!";
-            statusClass = "nice";
+            status = TAKE_ACTION;
+            statusClass = TAKE_ACTION_CLASS;
+        } else if (purchasedCount == workingCount * NICE_RATIO) {
+            status = NICE;
+            statusClass = NICE_CLASS;
         } else {
-            status = "Take it easy!";
-            statusClass = "high";
+            status = TAKE_EASY;
+            statusClass = TAKE_EASY_CLASS;
         }
         
         Map<String, Object> result = new HashMap<>();
@@ -45,7 +53,6 @@ public class AllStatusService {
         result.put("purchasedCount", purchasedCount);
         result.put("workingCount", workingCount);
         
-        // ログ出力（コンソール出力を削減してメモリ使用量を削減）
         logger.info("=== 在庫ステータス判定結果 ===");
         logger.info("ToMore: {}件, ToDo: {}件, Now!!: {}件", interestedCount, purchasedCount, workingCount);
         logger.info("判定結果: {} ({})", status, statusClass);

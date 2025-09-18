@@ -21,6 +21,72 @@
 - **Dependency Injection**: Spring Framework の DI コンテナを活用
 
 ## コード構造の詳細分析
+### 4. ビジネスロジック層
+
+#### AllStatusService
+
+- Loggerは各クラスで定義して出所をわかりやすく
+```java
+private static final Logger logger = LoggerFactory.getLogger(AllStatusService.class);
+```
+
+- インターフェースの継承
+```java
+@Autowired
+    private DashboardRepository dashboardRepository;
+    //このインデント下でのみインターフェースで継承したメソッドが使える
+```
+
+- マジックナンバーや固定ステータスは定数化する
+NG例
+```Java
+} else if (purchasedCount == workingCount * 2) {
+    status = "Nice!!";
+    statusClass = "nice";
+} else {
+    status = "Take it easy!";
+    statusClass = "high";
+}
+```
+
+定数化
+```Java
+private static final int NICE_RATIO = 2;
+private static final String TAKE_ACTION = "Take Action!";
+private static final String TAKE_ACTION_CLASS = "down";
+private static final String NICE = "Nice!!";
+private static final String NICE_CLASS = "nice";
+private static final String TAKE_EASY = "Take it easy!";
+private static final String TAKE_EASY_CLASS = "high";
+
+if (purchasedCount <= workingCount || purchasedCount == 0) {
+    status = TAKE_ACTION;
+    statusClass = TAKE_ACTION_CLASS;
+} else if (purchasedCount == workingCount * NICE_RATIO) {
+    status = NICE;
+    statusClass = NICE_CLASS;
+} else {
+    status = TAKE_EASY;
+    statusClass = TAKE_EASY_CLASS;
+}
+```
+
+- 文字列オブジェクトを作成せず効率的にも型安全的にも良い
+  - 不要になったオブジェクトを回収するGCの処理を軽減
+  - 型安全：自動的に適切な文字列変換して当てはめる
+NG例
+```java
+logger.debug("User: " + user.getName() + ", Age: " + user.getAge());
+```
+
+推奨例
+```java
+logger.debug("User: {}, Age: {}", user.getName(), user.getAge());
+```
+
+
+
+---
 
 ### 1. エントリーポイント
 
@@ -127,42 +193,6 @@ public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
 - メソッド名によるクエリ自動生成
 - カスタムクエリメソッドの定義
 
-### 4. ビジネスロジック層
-
-#### AllStatusService
-
-```java
-@Service
-public class AllStatusService {
-    public Map<String, Object> calculateInventoryStatus() {
-        long interestedCount = dashboardRepository.countByStatus(Status.INTERESTED);
-        long purchasedCount = dashboardRepository.countByStatus(Status.PURCHASED);
-        long workingCount = dashboardRepository.countByStatus(Status.WORKING);
-
-        String status;
-        String statusClass;
-
-        if (purchasedCount <= workingCount || purchasedCount == 0) {
-            status = "Take Action!";
-            statusClass = "down";
-        } else if (purchasedCount == workingCount * 2) {
-            status = "Nice!!";
-            statusClass = "nice";
-        } else {
-            status = "Take Action!";
-            statusClass = "high";
-        }
-
-        return result;
-    }
-}
-```
-
-**理解ポイント:**
-
-- 在庫状況の判定ロジック
-- ビジネスルールの実装（購入済みと作業中の比率による判定）
-- ログ出力によるデバッグ支援
 
 ### 5. プレゼンテーション層
 
