@@ -8,6 +8,5 @@ public class PitatokuApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PitatokuApplication.class, args);
-		System.out.println("Hello World");
 	}
 }
